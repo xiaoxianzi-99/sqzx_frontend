@@ -42,3 +42,18 @@ export const getSysRoleListByPage = (pageNum, pageSize, queryDto) => {
         params: queryDto
     })
 }
+
+export const findSysRoleMenuByRoleId = (roleId) => {
+    return request({
+        url: `/admin/system/sysRoleMenu/findSysRoleMenuByRoleId/${roleId}`,
+        method: 'get'
+    })
+}
+
+export const doAssign = (data) => {
+    return request({
+        url: `/admin/system/sysRoleMenu/doAssign`,
+        method: 'post',
+        data
+    })
+}

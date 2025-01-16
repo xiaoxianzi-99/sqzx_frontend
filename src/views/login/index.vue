@@ -132,6 +132,7 @@ export default defineComponent({
         const {data} = await GetValidateCode();
         state.model.codeKey = data.codeKey
         state.captchaSrc = data.codeValue
+        console.log(state.captchaSrc)
       },
       btnText: computed(() =>
           state.loading ? ctx.$t('login.logining') : ctx.$t('login.login')

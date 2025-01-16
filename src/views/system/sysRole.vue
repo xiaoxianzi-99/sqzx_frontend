@@ -42,9 +42,9 @@
     </el-dialog>
 
     <el-table :data="list" style="width: 100%">
-      <el-table-column prop="roleName" label="角色名称" width="180"/>
-      <el-table-column prop="roleCode" label="角色code" width="180"/>
-      <el-table-column prop="createTime" label="创建时间" width="180"/>
+      <el-table-column prop="roleName" label="角色名称"/>
+      <el-table-column prop="roleCode" label="角色code"/>
+      <el-table-column prop="createTime" label="创建时间"/>
       <el-table-column prop="description" label="描述"/>
       <el-table-column label="操作" align="center" width="280" #default="scope">
         <el-button type="primary" size="small" @click="editShow(scope.row)">
@@ -53,8 +53,31 @@
         <el-button type="danger" size="small" @click="deleteSysRole(scope.row.id)">
           删除
         </el-button>
+        <el-button type="warning" size="small" @click="showAssignMenu(scope.row)">
+          分配菜单
+        </el-button>
       </el-table-column>
     </el-table>
+    <!-- 分配菜单的对话框
+// tree组件添加ref属性，后期方便进行tree组件对象的获取
+-->
+    <el-dialog v-model="dialogMenuVisible" title="分配菜单" width="40%">
+      <el-form label-width="80px">
+        <el-tree
+            :data="sysMenuTreeList"
+            ref="tree"
+            show-checkbox
+            default-expand-all
+            :check-on-click-node="true"
+            node-key="id"
+            :props="defaultProps"
+        />
+        <el-form-item>
+          <el-button type="primary" @click="commit">提交</el-button>
+          <el-button @click="dialogMenuVisible = false">取消</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
     <!--分页条-->
     <el-pagination
         v-model:current-page="pageParem.page"
@@ -69,9 +92,57 @@
 </template>
 <script setup>
 import {onMounted, ref} from 'vue';
-import {getSysRoleListByPage, SaveSysRole, deleteSysRoleById} from "@/api/sysRole";
+import {getSysRoleListByPage, SaveSysRole, deleteSysRoleById, findSysRoleMenuByRoleId, doAssign} from "@/api/sysRole";
 import {ElMessage, ElMessageBox} from "element-plus";
-
+//------------提交修改的菜单分配
+const roleId = ref()
+const commit = async () => {
+  //获取选中的节点
+  const chechedNodes = tree.value.getCheckedNodes()
+  const chechedNodeIds = chechedNodes.map(item => {
+    return {
+      menuId: item.id,
+      isHalf: 0,
+    }
+  })
+  //获取选中的半节点
+  const halfCheckedNodes = tree.value.getHalfCheckedNodes()
+  const halfCheckedNodeIds = halfCheckedNodes.map(item => {
+    return {
+      menuId: item.id,
+      isHalf: 1,
+    }
+  })
+  const allNodes = [...chechedNodeIds, ...halfCheckedNodeIds]
+  let queryDto = {
+    roleId: roleId.value,
+    menuIdList: allNodes
+  }
+  const {code, message, data} = await doAssign(queryDto)
+  if (code === 200) {
+    ElMessage.success("分配成功")
+    dialogMenuVisible.value = false
+  } else {
+    ElMessage.error(message)
+  }
+}
+const sysMenuTreeList = ref([])
+const dialogMenuVisible = ref(false)
+const defaultProps = ref({
+  children: 'children',
+  label: 'title'
+})
+const tree = ref()
+//定义菜单树
+const showAssignMenu = async (row) => {
+  dialogMenuVisible.value = true
+  roleId.value = row.id
+  const {code, message, data} = await findSysRoleMenuByRoleId(row.id)
+  if (code === 200) {
+    sysMenuTreeList.value = data.menuList
+  }
+  tree.value.setCheckedKeys(data.menuIdList)
+}
 //删除角色
 const deleteSysRole = async (id) => {
   ElMessageBox.confirm(

@@ -56,6 +56,105 @@
   </el-table>
 </template>
 <script setup>
+import {onMounted, ref} from "vue";
+import {
+  deleteSysMenuById,
+  findNodes,
+  saveSysMenu,
+  updateSysMenu,
+} from '@/api/Sysmenu'
+import {ElMessage, ElMessageBox} from "element-plus";
+//---   ---删除
+const remove = async id => {
+  ElMessageBox.confirm('是否删除该菜单', '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
+  })
+      .then(async () => {
+    const {code, message, data} = await deleteSysMenuById(id)
+    if (code === 200) {
+        ElMessage.success(message)
+        fetch()
+    } else {
+      ElMessage.error(message)
+    }
+  }).catch(() => {
+    ElMessage.info('已取消删除')
+  });
+}
+//--------修改
+const editShow = (row) => {
+  sysMenu.value = row
+  dialogVisible.value = true
+  dialogTitle.value = '修改菜单'
+}
+//----添加
+const dialogVisible = ref(false)
+const dialogTitle = ref('')
+const addShow = (row) => {
+  //----清空表单
+  sysMenu.value = {
+    sortValue: 1,
+    status: 1
+  }
+  if (!row.id) {
+    sysMenu.value.parentId = 0
+    dialogVisible.value = true
+    dialogTitle.value = '添加菜单'
+  } else {
+    sysMenu.value.parentId = row.id
+    dialogVisible.value = true
+    dialogTitle.value = '添加' + row.title + '下级菜单'
+  }
+}
+const defaultForm = {
+  id: '',
+  parentId: 0,
+  title: '',
+  url: '',
+  component: '',
+  icon: '',
+  sortValue: 1,
+  status: 1,
+}
+const sysMenu = ref(defaultForm)
+const saveOrUpdate = () => {
+  if (!sysMenu.value.id) {
+    //----添加
+    addData()
+  } else {
+    //----修改
+    editData()
+  }
+}
+const editData = async () => {
+  const {code, message, data} = await updateSysMenu(sysMenu.value)
+  if (code === 200) {
+    ElMessage.success(message)
+    dialogVisible.value = false
+    fetch()
+  }
+}
+const addData = async () => {
+  const {code, message, data} = await saveSysMenu(sysMenu.value)
+  if (code === 200) {
+    ElMessage.success(message)
+    dialogVisible.value = false
+    fetch()
+  }
+}
+//----获取菜单列表
+const list = ref([])
+onMounted(() => {
+  fetch()
+})
+const fetch = async () => {
+  const {code, message, data} = await findNodes()
+  if (code === 200) {
+    list.value = data
+  }
+}
 </script>
 <style scoped>
 .search-div {
