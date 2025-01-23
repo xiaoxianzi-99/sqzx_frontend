@@ -11,11 +11,13 @@
  */
 import request from '@/utils/request'
 
+const api_name = "/admin/system/index";
+
 // 获取菜单
 export const GetMenus = params => {
-  return request({
-    url: '/api/menus',
-    method: 'get',
-    params,
-  })
+    return request({
+        url: `${api_name}/menus`,
+        method: 'get',
+        params
+    })
 }

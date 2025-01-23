@@ -19,7 +19,7 @@ export default [
   {
     path: '/system',
     component: Layout,
-    name: 'ststem',
+    name: 'system',
     meta: {
       title: '系统管理',
     },
