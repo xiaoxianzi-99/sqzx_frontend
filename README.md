@@ -1,26 +1,17 @@
-<div align="center"> <a href="https://github.com/huzhushan/vue3-element-admin"> <img alt="VEA Logo" width="160" src="https://huzhushan.gitee.io/vue3-element-admin-site/assets/logo.1d6978fb.svg"> </a> <br> <br>
-
+<h1>在线商城系统后台</h1>
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](LICENSE)
-
-<h1>Vue3 Element Admin</h1>
-</div>
 
 ## 简介
 
 **Vue3 Element Admin** 是一个免费开源的中后台模版。基于`vue3`+`ElementPlus`+`Vite`开发，是一个开箱即用的中后台系统前端解决方案，它可以帮助你快速搭建企业级中后台产品原型，也可用于学习参考。
 
-- [在线预览](https://huzhushan.gitee.io/vue3-element-admin-site/)
-- [使用文档](https://huzhushan.gitee.io/vue3-element-admin)
+**本项目**基于此进行二创开发
 
 ## 项目地址
 
 - [github 项目地址](https://github.com/huzhushan/vue3-element-admin)
 - [gitee 项目地址](https://gitee.com/huzhushan/vue3-element-admin)
 
-## 视频教程
-
-- [使用 vue3-element-admin 开发后台管理系统](https://www.bilibili.com/video/BV12v411V7ho/)
-- [vue3-element-admin 架构搭建过程](https://study.163.com/course/courseMain.htm?courseId=1211577825&share=2&shareId=400000000685053) 
 
 ## 技术储备
 
@@ -113,8 +104,6 @@ npm run build
 ## 交流
 
 `Vue3-Element-Admin` 是完全开源免费的项目，在帮助开发者更方便地进行中大型管理系统开发，同时也提供 QQ 交流群使用问题欢迎在群内提问。
-
-- QQ 群 `734037120`
 
 ## License
 

@@ -58,6 +58,7 @@ export default defineComponent({
     pointer-events: none;
   }
   .title {
+
     font-size: 20px;
     margin: 32px 0;
   }

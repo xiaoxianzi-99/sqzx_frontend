@@ -150,12 +150,12 @@
             />
           </el-form-item>
           <el-form-item label="品牌">
-            <el-select class="m-2" placeholder="选择品牌" v-model="product.brandName" style="width: 100%;">
+            <el-select class="m-2" placeholder="选择品牌" v-model="product.brandId" style="width: 100%;">
               <el-option
                   v-for="item in categoryBrandList"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.id"
+                  :key="item.brandId"
+                  :label="item.brandName"
+                  :value="item.brandId"
               />
             </el-select>
           </el-form-item>
@@ -244,16 +244,16 @@
                 </el-upload>
               </el-table-column>
               <el-table-column label="售价" #default="scope">
-                <el-input v-model="scope.row.salePrice"/>
+                <el-input-number v-model="scope.row.salePrice"/>
               </el-table-column>
               <el-table-column label="市场价" #default="scope">
-                <el-input v-model="scope.row.marketPrice"/>
+                <el-input-number v-model="scope.row.marketPrice"/>
               </el-table-column>
               <el-table-column label="成本价" #default="scope">
-                <el-input v-model="scope.row.costPrice"/>
+                <el-input-number v-model="scope.row.costPrice"/>
               </el-table-column>
               <el-table-column label="库存数" #default="scope">
-                <el-input v-model="scope.row.stockNum"/>
+                <el-input-number v-model="scope.row.stockNum"/>
               </el-table-column>
               <el-table-column label="重量" #default="scope">
                 <el-input v-model="scope.row.weight"/>
@@ -708,7 +708,11 @@ const getById = async id => {
   console.log(product.value)
 
   //分类赋值
-  categoryIdList.value = [product.value.category1Id, product.value.category2Id, product.value.category3Id]
+  categoryIdList.value = [
+    product.value.category1Id,
+    product.value.category2Id,
+    product.value.category3Id,
+  ]
 
   //处理图片
   fileList.value = []

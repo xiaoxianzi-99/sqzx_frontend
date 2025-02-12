@@ -65,7 +65,7 @@ export default defineComponent({
     max-height: 32px;
   }
   .title {
-    color: #fff;
+    color: $menuTextColor;
     font-size: 14px;
     font-weight: 700;
     white-space: nowrap;
